@@ -25,7 +25,7 @@ class LeetCodeScraper:
             e.g. "two-sum" for the problem "Two Sum"
         """
         self.title_slug = title_slug
-
+    
     def get_question_details(self) -> dict[str, any]:
         """
         Scrape problem details from LeetCode.

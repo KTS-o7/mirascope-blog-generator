@@ -2,7 +2,7 @@
 
 import argparse
 import sys
-from blog_generator import BlogGenerator
+from blog_generator import ProblemOfTheDayBlogGenerator
 
 def read_solution_file(file_path: str) -> str:
     """Read solution code from file"""
@@ -27,7 +27,7 @@ def main():
         solution_code = read_solution_file(args.solution_file)
         
         # Initialize blog generator
-        generator = BlogGenerator()
+        generator = ProblemOfTheDayBlogGenerator()
         
         # Generate and save blog post
         generator.save_blog_post(

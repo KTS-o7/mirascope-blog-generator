@@ -7,7 +7,7 @@ import re
 from leetcode_client import LeetCodeScraper
 from groq_client import GroqLLMClient
 
-class BlogGenerator:
+class ProblemOfTheDayBlogGenerator:
     def __init__(self):
         self.groq_client = GroqLLMClient()
     
@@ -64,9 +64,8 @@ math = false
             "```\n",
             "## Explanation\n",
             "### 1. Intuition\n",
-            "```markdown",
             "\n".join([f"- {point}" for point in explanations.intuition]),
-            "```\n",
+            "\n",
             "### 2. Implementation\n",
             "\n".join([f"- {point}" for point in explanations.implementation]),
             "\n",
@@ -75,6 +74,41 @@ math = false
             f"### Time Complexity: \n{"\n".join([f"- {point} " for point in complexity_explaination.time_complexity_explained])}\n",
             f"### Space Complexity: \n{"\n".join([f"- {point} " for point in complexity_explaination.space_complexity_explained])}\n",
         ]
+        
+        blog_content.extend([
+            "<hr>\n",
+            "### Footnote\n",
+            f"> This question is rated as **{problem_details['Difficulty']}** difficulty.\n",
+        ])
+        if problem_details['Hints']:
+            blog_content.extend([
+            "#### Hints\n",
+            "\n".join([f"> {point}\n" for point in problem_details['Hints']]),
+            ])
+        if problem_details['SimilarQuestions']:
+            similar_questions_list =[]
+            leetcode_problem_base_url = "https://leetcode.com/problems/"
+            for item in problem_details["SimilarQuestions"]:
+                item_dict = {}
+                item_dict["title"] = item["title"]
+                item_dict["slug"] = item["titleSlug"]
+                item_dict["difficulty"] = item["difficulty"]
+                item_dict["url"] = f"{leetcode_problem_base_url}{item_dict['slug']}"
+                similar_questions_list.append(item_dict)
+            blog_content.extend([
+            "<hr>\n",
+            "### Similar Questions:\n",
+            "| Title | URL | Difficulty |",
+            "| ----- | --- | --- |",
+            "".join([f"| {point['title']} | {point['url']} |{point["difficulty"]}|\n" for point in similar_questions_list]),
+            ])
+            
+        if problem_details['CompanyTags']:
+            blog_content.extend([
+            "<hr>\n",
+            f"### Company Tags: \n",
+            "\n".join([f"- {point} " for point in problem_details['CompanyTags']]),
+            ])
         
         return "\n".join(blog_content)
     
