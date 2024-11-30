@@ -20,6 +20,12 @@ class ComplexityAnalysis(BaseModel):
     """Complexity analysis of code solution"""
     time_complexity_explained: list[str]
     space_complexity_explained: list[str]
+    
+class IntuitionBuilder(BaseModel):
+    """Intuition building for code solution"""
+    initial_thoughts: str
+    intuitive_analysis: str
+    
 
 @groq.call(model=model, response_model=CodeExplanation, json_mode=True, call_params=params)
 def generate_code_explanation(problem: str, solution: str) -> str:
@@ -118,6 +124,31 @@ Required JSON Format:
 """)
     ]
 
+@groq.call(model=model, response_model=IntuitionBuilder, json_mode=True)
+def generate_intuition(problem: str, solution: str, ) -> str:
+    return [
+        Messages.System("""You are an intuition building expert. Follow these rules strictly:
+- Return JSON with exactly two fields: 'initial_thoughts' and 'intuitive_analysis' as strings
+- Each field must contain 4-6 clear, concise points
+- Use non-technical language and analogies
+- Focus on problem-solving strategies
+- No code-specific explanations
+- Focus on building problem-solving intuition
+"""),
+        Messages.User(f"""Here is the problem statement:
+```{problem}```
+Here is the solution:
+```{solution}```
+
+Required JSON Format:
+{{
+    "initial_thoughts": "Initial thoughts on how to approach the problem",
+    "intuitive_analysis": "Analysis of how to intuitively solve the problem"
+}}
+""")
+    ]
+
+
 class GroqLLMClient:
     def generate_explanation(self, problem_details: dict, solution_code: str) -> CodeExplanation:
         """Generate explanation for given problem and solution"""
@@ -162,4 +193,19 @@ class GroqLLMClient:
             return ComplexityAnalysis(
                 time_complexity_explained=["Error generating time complexity explanation"],
                 space_complexity_explained=["Error generating space complexity explanation"]
+            )
+            
+    def generate_general_intuition(self, problem_details: dict, solution_code: str) -> IntuitionBuilder:
+        """Generate general intuition for given problem and solution"""
+        try:
+            response = generate_intuition(
+                problem=problem_details['Content'],
+                solution=solution_code
+            )
+            return response
+        except Exception as e:
+            print(f"Error generating general intuition: {e}")
+            return IntuitionBuilder(
+                initial_thoughts="Error generating initial thoughts",
+                intuitive_analysis="Error generating intuitive analysis"
             )

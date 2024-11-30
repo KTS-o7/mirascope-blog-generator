@@ -1,23 +1,46 @@
 class Solution {
 public:
-    vector<int> resultsArray(vector<int>& nums, int k) {
-        if(k==1)
-            return nums;
-        
-        int size = nums.size();
-        vector<int>result(size-k+1,-1);
-        int count = 1;
-        for(int i=0;i<size-1;i++){
+    vector<vector<int>> graph;
+    vector<int> distances;   
 
-            if(nums[i]+1 == nums[i+1])
-                count++;
-            else
-                count =1;
-            
-            if(count >= k)
-                result[i+2-k] = nums[i+1];
+    int computeShortestPath(int start_node, int total_nodes) {
+        queue<int> bfs_queue;
+        bfs_queue.push(start_node);
+
+        while (!bfs_queue.empty()) {
+            int curr_node = bfs_queue.front();
+            bfs_queue.pop();
+
+            for (const int& neighbor : graph[curr_node]) {
+                if (distances[neighbor] > distances[curr_node] + 1) {
+                    distances[neighbor] = distances[curr_node] + 1;
+                    bfs_queue.push(neighbor);
+                }
+            }
         }
+
+        return distances[total_nodes - 1]; 
+    }
+
+    vector<int> shortestDistanceAfterQueries(int total_nodes, vector<vector<int>>& queries) {
+        graph.resize(total_nodes); 
+        for (int i = 0; i < total_nodes - 1; i++) {
+            graph[i].push_back(i + 1); 
+        }
+
+        distances.resize(total_nodes);
+        iota(distances.begin(), distances.end(), 0); 
+        // iota is used to prevent loops like this
+        // for (int i = 0; i < n; ++i) {
+                //distances[i] = i;
+            //}
+        vector<int> result;
+        result.reserve(queries.size());
+        for (const auto& query : queries) {
+            graph[query[0]].push_back(query[1]); 
+            result.push_back(computeShortestPath(query[0], total_nodes)); 
+        }
+
         return result;
-        
     }
 };

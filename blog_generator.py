@@ -44,6 +44,7 @@ math = false
         explanations = self.groq_client.generate_explanation(problem_details, solution_code)
         complexity = self.groq_client.generate_complexity(solution_code)
         complexity_explaination = self.groq_client.generate_complexity_analysis(solution_code,complexity)
+        general_intuition = self.groq_client.generate_general_intuition(problem_details, solution_code)
         
         # Build blog content
         blog_content = [
@@ -63,6 +64,12 @@ math = false
             f"| {complexity.algorithm}  | {complexity.time_complexity}           | {complexity.space_complexity}             |",
             "```\n",
             "## Explanation\n",
+            "#### Intial Thoughts\n",
+            "\n".join([f"{general_intuition.initial_thoughts}"]),
+            "\n",
+            "#### Intuitive Analysis\n",
+            "\n".join([f"{general_intuition.intuitive_analysis}"]),
+            "\n",
             "### 1. Intuition\n",
             "\n".join([f"- {point}" for point in explanations.intuition]),
             "\n",
