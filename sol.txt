@@ -1,46 +1,27 @@
 class Solution {
 public:
-    vector<vector<int>> graph;
-    vector<int> distances;   
+    vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
+        vector<bool> ans(queries.size(), false);
+        vector<int> prefix(nums.size(), 0);
+        prefix[0] = 0;
 
-    int computeShortestPath(int start_node, int total_nodes) {
-        queue<int> bfs_queue;
-        bfs_queue.push(start_node);
-
-        while (!bfs_queue.empty()) {
-            int curr_node = bfs_queue.front();
-            bfs_queue.pop();
-
-            for (const int& neighbor : graph[curr_node]) {
-                if (distances[neighbor] > distances[curr_node] + 1) {
-                    distances[neighbor] = distances[curr_node] + 1;
-                    bfs_queue.push(neighbor);
-                }
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums[i] % 2 == nums[i - 1] % 2) {
+                prefix[i] = prefix[i - 1] + 1;
+            }
+            else {
+                prefix[i] = prefix[i - 1];
             }
         }
 
-        return distances[total_nodes - 1]; 
-    }
+        for (int i = 0; i < queries.size(); i++) {
+            vector<int> query = queries[i];
+            int start = query[0];
+            int end = query[1];
 
-    vector<int> shortestDistanceAfterQueries(int total_nodes, vector<vector<int>>& queries) {
-        graph.resize(total_nodes); 
-        for (int i = 0; i < total_nodes - 1; i++) {
-            graph[i].push_back(i + 1); 
+            ans[i] = prefix[end] - prefix[start] == 0;
         }
 
-        distances.resize(total_nodes);
-        iota(distances.begin(), distances.end(), 0); 
-        // iota is used to prevent loops like this
-        // for (int i = 0; i < n; ++i) {
-                //distances[i] = i;
-            //}
-        vector<int> result;
-        result.reserve(queries.size());
-        for (const auto& query : queries) {
-            graph[query[0]].push_back(query[1]); 
-            result.push_back(computeShortestPath(query[0], total_nodes)); 
-        }
-
-        return result;
+        return ans;
     }
 };
