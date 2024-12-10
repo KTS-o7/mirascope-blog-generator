@@ -34,7 +34,7 @@ while IFS= read -r question || [ -n "$question" ]; do
         echo -e "${BLUE}Processing question: ${NC}$question"
         
         echo -e "${GREEN}Running script${NC}"
-        python main.py "$question" "./sol.txt"
+        python main.py "$question" "./ans.txt"
         
         
         # If Python script executed successfully, mark question as processed

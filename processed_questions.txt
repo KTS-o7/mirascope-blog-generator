@@ -13,3 +13,5 @@ https://leetcode.com/problems/maximum-xor-for-each-query/?envType=daily-question
 https://leetcode.com/problems/largest-combination-with-bitwise-and-greater-than-zero/?envType=daily-question&envId=2024-11-07
 
 https://leetcode.com/problems/special-array-ii/?envType=daily-question&envId=2024-12-09
+https://leetcode.com/problems/sum-of-prefix-scores-of-strings/?envType=daily-question&envId=2024-09-25
+https://leetcode.com/problems/string-compression-iii/?envType=daily-question&envId=2024-11-04
