@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string compressedString(string word) {
+        string comp = "";
+        int size = word.size();
+        comp.reserve(size*2);
+        int ptr = 0;
+        
+        while (ptr < size) {
+            int frq = 1;
+            char ch = word[ptr];
+            ptr++;
+            
+            while (ptr < size && word[ptr] == ch && frq < 9) {
+                ptr++;
+                frq++;
+            }
+
+            comp += (frq + '0');
+            comp += ch;
+        }
+        
+        return comp;
+    }
+};

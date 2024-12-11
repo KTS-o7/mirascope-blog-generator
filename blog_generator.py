@@ -2,14 +2,13 @@
 
 import os
 from datetime import datetime
-from typing import Dict
 import re
 from leetcode_client import LeetCodeScraper
-from groq_client import GroqLLMClient
+from groq_client import GroqLLMClient,CodeComplexity,CodeExplanation,ComplexityAnalysis,IntuitionBuilder
 
 class ProblemOfTheDayBlogGenerator:
     def __init__(self):
-        self.groq_client = GroqLLMClient()
+        self.groq_client = GroqLLMClient()  
     
     def extract_title_slug(self, leetcode_url: str) -> str:
         """Extract title slug from LeetCode URL"""
@@ -18,7 +17,7 @@ class ProblemOfTheDayBlogGenerator:
             raise ValueError("Invalid LeetCode URL format")
         return match.group(1)
     
-    def generate_front_matter(self, problem_details: Dict) -> str:
+    def generate_front_matter(self, problem_details: dict) -> str:
         """Generate Hugo front matter"""
         current_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+05:30")
         tags = [tag.lower() for tag in problem_details["TopicTags"]]
@@ -46,9 +45,18 @@ math = false
         complexity_explaination = self.groq_client.generate_complexity_analysis(solution_code,complexity)
         general_intuition = self.groq_client.generate_general_intuition(problem_details, solution_code)
         
+        exceptions = [CodeExplanation(intuition=["Error generating intuition"], implementation=["Error generating implementation details"]),
+                      CodeComplexity(time_complexity="Error generating time complexity", space_complexity="Error generating space complexity", algorithm="Error determining algorithm"),
+                      ComplexityAnalysis(time_complexity_explained=["Error generating time complexity explanation"], space_complexity_explained=["Error generating space complexity explanation"]),
+                      IntuitionBuilder(initial_thoughts="Error generating initial thoughts", intuitive_analysis="Error generating intuitive analysis")]
+        
+        if explanations in exceptions or complexity in exceptions or complexity_explaination in exceptions or general_intuition in exceptions:
+            raise Exception("Error generating explanations")
+        
+        
         # Build blog content
         blog_content = [
-            self.generate_front_matter(problem_details),
+            self.generate_front_matter(problem_details,),
             "# Problem Statement\n",
             f"**Link** - [Problem {problem_details['QuestionFrontendId']}]({leetcode_url})\n",
             "## Question\n",

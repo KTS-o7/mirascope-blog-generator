@@ -1,32 +1,31 @@
 from mirascope.core import groq, Messages
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from mirascope.core.groq import GroqCallParams
 
 params = GroqCallParams(temperature=0.2, max_tokens=6144, top_p=0.5)
-model = "llama-3.2-90b-vision-preview"
+model = "llama-3.3-70b-versatile"
 
 class CodeExplanation(BaseModel):
     """Structured explanation of code solution"""
-    intuition: list[str]
-    implementation: list[str]
+    intuition: list[str] = Field(description="Intuition building for code solution")
+    implementation: list[str] = Field(description="Implementation details of code solution")
     
 class CodeComplexity(BaseModel):
     """Complexity analysis of code solution"""
-    time_complexity: str
-    space_complexity: str
-    algorithm: str
+    time_complexity: str = Field(description="Time complexity of the code solution")
+    space_complexity: str = Field(description="Space complexity of the code solution")
+    algorithm: str = Field(description="Algorithm used in the code solution")
 
 class ComplexityAnalysis(BaseModel):
     """Complexity analysis of code solution"""
-    time_complexity_explained: list[str]
-    space_complexity_explained: list[str]
+    time_complexity_explained: list[str] = Field(description="Time complexity explained")
+    space_complexity_explained: list[str] = Field(description="Space complexity explained")
     
 class IntuitionBuilder(BaseModel):
     """Intuition building for code solution"""
-    initial_thoughts: str
-    intuitive_analysis: str
+    initial_thoughts: str = Field(description="Initial thoughts on how to approach the problem")
+    intuitive_analysis: str = Field(description="Analysis of how to intuitively solve the problem")
     
-
 @groq.call(model=model, response_model=CodeExplanation, json_mode=True, call_params=params)
 def generate_code_explanation(problem: str, solution: str) -> str:
     return [
@@ -95,7 +94,7 @@ def generate_complexity_analysis(solution: str, complexity_values: CodeComplexit
         Messages.System("""
 You are a complexity explanation expert. Follow these rules strictly:
 - Return JSON with exactly two fields: 'time_complexity_explained' and 'space_complexity_explained'
-- Each field must be an array of 3-5 technical explanation points
+- Each field must be an array of 2-3 technical explanation points
 - Reference specific code parts using backticks
 - Include mathematical reasoning for each complexity
 - Explain worst, average, and best cases where applicable
@@ -209,3 +208,4 @@ class GroqLLMClient:
                 initial_thoughts="Error generating initial thoughts",
                 intuitive_analysis="Error generating intuitive analysis"
             )
+            

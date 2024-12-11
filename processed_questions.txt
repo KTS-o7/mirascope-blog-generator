@@ -1,0 +1,17 @@
+https://leetcode.com/problems/perfect-squares/
+
+https://leetcode.com/problems/copy-list-with-random-pointer/submissions/1237453278/
+https://leetcode.com/problems/maximum-points-after-enemy-battles/description/
+https://leetcode.com/problems/minimum-height-trees/description/?envType=daily-question&envId=2024-04-23
+https://leetcode.com/problems/the-number-of-beautiful-subsets/description/?envType=daily-question&envId=2024-05-23
+https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/submissions/?envType=daily-question&envId=2024-01-28
+https://leetcode.com/problems/maximum-score-words-formed-by-letters/description/?envType=daily-question&envId=2024-05-24
+https://leetcode.com/problems/two-best-non-overlapping-events/description/?envType=daily-question&envId=2024-12-08
+https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/submissions/1452286706/?envType=daily-question&envId=2024-11-14
+https://leetcode.com/problems/most-beautiful-item-for-each-query/?envType=daily-question&envId=2024-11-12
+https://leetcode.com/problems/maximum-xor-for-each-query/?envType=daily-question&envId=2024-11-08
+https://leetcode.com/problems/largest-combination-with-bitwise-and-greater-than-zero/?envType=daily-question&envId=2024-11-07
+
+https://leetcode.com/problems/special-array-ii/?envType=daily-question&envId=2024-12-09
+https://leetcode.com/problems/sum-of-prefix-scores-of-strings/?envType=daily-question&envId=2024-09-25
+https://leetcode.com/problems/string-compression-iii/?envType=daily-question&envId=2024-11-04
